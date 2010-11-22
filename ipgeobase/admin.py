@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from django.contrib import admin
-from django_ipgeobase.models import City, Country, District, Region, IPGeoBase
+from ipgeobase.models import City, Country, District, Region, IPGeoBase
 
 class RegionAdmin(admin.ModelAdmin):
     prepopulated_fields = {"alias": ("name",),}
