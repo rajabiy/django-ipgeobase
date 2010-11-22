@@ -112,11 +112,12 @@ class Command(NoArgsCommand):
             
             transaction.commit()
         except Exception, e:
-            message = u"Данные не обновлены:", e
+            print e
+            transaction.rollback()
+            message = u"Данные не обновлены: %s" % e
             if send_message:
                 mail_admins(subject=ERROR_SUBJECT, message=message)
-            return message
-        finally:
-            transaction.rollback()
+            print e
+        finally:            
             transaction.leave_transaction_management()
-        return u"Таблица ipgeobase обновлена."
+        print u"Таблица ipgeobase обновлена."
