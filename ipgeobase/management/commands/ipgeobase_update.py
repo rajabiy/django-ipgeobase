@@ -2,12 +2,12 @@
 
 from django.core.management.base import NoArgsCommand
 from django.db import connection, transaction
-from django_ipgeobase.conf import *
+from ipgeobase.conf import *
 from zipfile import ZipFile
 from urllib import urlopen
 from cStringIO import StringIO
 from django.core.mail import mail_admins
-from django_ipgeobase.models import City, Country, District, Region, IPGeoBase
+from ipgeobase.models import City, Country, District, Region, IPGeoBase
 from django.utils.encoding import force_unicode
 from pytils.translit import slugify
 
