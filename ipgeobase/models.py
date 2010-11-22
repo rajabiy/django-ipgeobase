@@ -1,7 +1,7 @@
 #coding: utf-8
 
 from django.db import models
-from django_ipgeobase.managers import IPGeoBaseManager
+from ipgeobase.managers import IPGeoBaseManager
 from django.utils.translation import ugettext_lazy as _
 
 class Country(models.Model):
