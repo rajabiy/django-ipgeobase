@@ -46,7 +46,7 @@ class Region(models.Model):
         return u'%s, %s' % (self.country, self.name)
     
 class City(models.Model):    
-    region = models.ForeignKey(Region, verbose_name = _("region"))
+    region = models.ForeignKey(Region, verbose_name = _("region"), blank = True, null = True)
     
     name = models.CharField(_('name'), max_length=255)
     alias = models.SlugField(verbose_name=_('alias'))
