@@ -45,7 +45,8 @@ class Region(models.Model):
     def __unicode__(self):
         return u'%s, %s' % (self.country, self.name)
     
-class City(models.Model):    
+class City(models.Model):
+    country = models.ForeignKey(Country, verbose_name = _("country"))
     region = models.ForeignKey(Region, verbose_name = _("region"), blank = True, null = True)
     
     name = models.CharField(_('name'), max_length=255)

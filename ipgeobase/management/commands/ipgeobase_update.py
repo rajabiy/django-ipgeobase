@@ -32,7 +32,7 @@ def get_or_create_city(region, city_name):
     try:
         city = City.objects.get(region = region, name = city_name)
     except:
-        city = City(region = region, name = city_name, alias = slugify(city_name).lower())
+        city = City(region = region, country = country, name = city_name, alias = slugify(city_name).lower())
         city.save()
     
     city_hashes[key] = city
