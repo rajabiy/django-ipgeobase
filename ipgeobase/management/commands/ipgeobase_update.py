@@ -15,9 +15,9 @@ ERROR_SUBJECT = u"Ошибка команды ipgeobase_update"
 send_message = IPGEOBASE_SEND_MESSAGE_FOR_ERRORS
 
 try:
-    country = Country.objects.get(alias = 'russia')
+    country = Country.objects.get(alias = 'RU')
 except:
-    country = Country(name = u'Россия', alias = 'russia')
+    country = Country(name = u'Россия', alias = 'RU')
     country.save()
 
 city_hashes = {}
