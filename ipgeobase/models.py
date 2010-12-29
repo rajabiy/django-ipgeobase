@@ -47,7 +47,7 @@ class Region(models.Model):
     
 class City(models.Model):
     country = models.ForeignKey(Country, verbose_name = _("country"))
-    region = models.ForeignKey(Region, verbose_name = _("region"))
+    region = models.ForeignKey(Region, verbose_name = _("region"), blank = True, null = True)
     
     name = models.CharField(_('name'), max_length=255)
     alias = models.SlugField(verbose_name=_('alias'))
