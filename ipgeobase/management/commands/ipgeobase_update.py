@@ -95,9 +95,11 @@ class Command(NoArgsCommand):
             print u"Записываем новое..."
             data =  [l.split('\t') for l in lines if l.strip()]
             for line in data:
+                print line
                 region = get_or_create_region(country, force_unicode(line[4]))
                 city = get_or_create_city(region, force_unicode(line[3]))
                 district = get_or_create_district(country, force_unicode(line[5]))
+                print region, city, district
                 
                 base = IPGeoBase(
                     ip_block = line[0],
