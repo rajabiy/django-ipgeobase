@@ -116,6 +116,8 @@ class Command(NoArgsCommand):
                 
                 base.save()
             
+            import pdb
+            pdb.set_trace()
             transaction.commit()
         except Exception, e:
             print e
