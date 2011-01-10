@@ -97,7 +97,14 @@ class Command(NoArgsCommand):
         print u"Записываем новое..."
         
         data =  [l.split('\t') for l in lines if l.strip()]
+        
+        from progressbar import ProgressBar, Percentage, Bar
+        pbar = ProgressBar(widgets=[Percentage(), Bar()], maxval=len(data)).start()
+        count = 0
+        
         for line in data:
+            pbar.update(count+1)
+            count += 1
             #print line
             region = get_or_create_region(country, force_unicode(line[4]))
             city = get_or_create_city(region, force_unicode(line[3]))
@@ -116,6 +123,7 @@ class Command(NoArgsCommand):
             )
             
             base.save()
+        pbar.finish()
                 
             #transaction.commit()
 #        except Exception, e:
