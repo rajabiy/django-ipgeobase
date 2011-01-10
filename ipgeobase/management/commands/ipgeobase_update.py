@@ -70,7 +70,7 @@ def get_or_create_region(country, name):
 class Command(NoArgsCommand):
     """С помощью этой команды база с ip-блоками обновляется с сайта-источника"""
     
-    #@transaction.commit_manually
+    @transaction.commit_manually
     def handle(self, *args, **options):
         print u"Скачиваем zip-архив базы с сайта-источника..."
         f = urlopen(IPGEOBASE_SOURCE_URL)
@@ -89,50 +89,45 @@ class Command(NoArgsCommand):
         buffer.close()
         print u"Начинаем обновление..."
         lines = file_read.decode(IPGEOBASE_CODING).split('\n')
-        #transaction.enter_transaction_management()
-        #try:
-            #transaction.managed(True)
-        print u"Удаляем старые записи в таблице ipgeobase..."
-        IPGeoBase.objects.all().delete()
-        print u"Записываем новое..."
-        
-        data =  [l.split('\t') for l in lines if l.strip()]
-        
-        from progressbar import ProgressBar, Percentage, Bar
-        pbar = ProgressBar(widgets=[Percentage(), Bar()], maxval=len(data)).start()
-        count = 0
-        
-        for line in data:
-            pbar.update(count+1)
-            count += 1
-            #print line
-            region = get_or_create_region(country, force_unicode(line[4]))
-            city = get_or_create_city(region, force_unicode(line[3]))
-            district = get_or_create_district(country, force_unicode(line[5]))
-            #print region, city, district
+        try:
+            print u"Удаляем старые записи в таблице ipgeobase..."
+            IPGeoBase.objects.all().delete()
+            print u"Записываем новое..."
             
-            base = IPGeoBase(
-                ip_block = line[0],
-                start = line[1],
-                end = line[2],
-                city = city,
-                region = region,
-                district = district,
-                latitude = line[6],
-                longitude = line[7]
-            )
+            data =  [l.split('\t') for l in lines if l.strip()]
             
-            base.save()
-        pbar.finish()
+            from progressbar import ProgressBar, Percentage, Bar
+            pbar = ProgressBar(widgets=[Percentage(), Bar()], maxval=len(data)).start()
+            count = 0
+            
+            for line in data:
+                pbar.update(count+1)
+                count += 1
+                #print line
+                region = get_or_create_region(country, force_unicode(line[4]))
+                city = get_or_create_city(region, force_unicode(line[3]))
+                district = get_or_create_district(country, force_unicode(line[5]))
+                #print region, city, district
                 
-            #transaction.commit()
-#        except Exception, e:
-#            print e
-#            #transaction.rollback()
-#            message = u"Данные не обновлены: %s" % e
-#            if send_message:
-#                mail_admins(subject=ERROR_SUBJECT, message=message)
-#            print e
-#        finally:            
-#            transaction.leave_transaction_management()
+                base = IPGeoBase(
+                    ip_block = line[0],
+                    start = line[1],
+                    end = line[2],
+                    city = city,
+                    region = region,
+                    district = district,
+                    latitude = line[6],
+                    longitude = line[7]
+                )
+                
+                base.save()
+            pbar.finish()
+                
+            transaction.commit()
+        except Exception, e:
+            print e
+            transaction.rollback()
+            message = u"Данные не обновлены: %s" % e
+            if send_message:
+                mail_admins(subject=ERROR_SUBJECT, message=message)
         print u"Таблица ipgeobase обновлена."
