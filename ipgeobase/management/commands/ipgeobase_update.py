@@ -101,17 +101,18 @@ class Command(NoArgsCommand):
             data =  [l.split('\t') for l in lines if l.strip()]
             
             from progressbar import ProgressBar, Percentage, Bar
-            pbar = ProgressBar(widgets=[Percentage(), Bar()], maxval=len(data)).start()
+            #pbar = ProgressBar(widgets=[Percentage(), Bar()], maxval=len(data)).start()
             count = 0
             
             for line in data:
-                pbar.update(count+1)
+                #pbar.update(count+1)
                 count += 1
-                #print line
+                
+                print line
                 region = get_or_create_region(country, force_unicode(line[4]))
                 city = get_or_create_city(region, force_unicode(line[3]))
                 district = get_or_create_district(country, force_unicode(line[5]))
-                #print region, city, district
+                print region, city, district
                 
                 base = IPGeoBase(
                     ip_block = line[0],
@@ -125,10 +126,11 @@ class Command(NoArgsCommand):
                 )
                 
                 base.save()
-            pbar.finish()
+            #pbar.finish()
                 
             transaction.commit()
         except Exception, e:
+            print "exception %s" % e
             print e
             transaction.rollback()
             message = u"Данные не обновлены: %s" % e
