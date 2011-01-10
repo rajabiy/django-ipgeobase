@@ -69,6 +69,8 @@ def get_or_create_region(country, name):
 
 class Command(NoArgsCommand):
     """С помощью этой команды база с ip-блоками обновляется с сайта-источника"""
+    
+    @transaction.commit_manually
     def handle(self, *args, **options):
         print u"Скачиваем zip-архив базы с сайта-источника..."
         f = urlopen(IPGEOBASE_SOURCE_URL)
@@ -87,9 +89,9 @@ class Command(NoArgsCommand):
         buffer.close()
         print u"Начинаем обновление..."
         lines = file_read.decode(IPGEOBASE_CODING).split('\n')
-        transaction.enter_transaction_management()
+        #transaction.enter_transaction_management()
         try:
-            transaction.managed(True)
+            #transaction.managed(True)
             print u"Удаляем старые записи в таблице ipgeobase..."
             IPGeoBase.objects.all().delete()
             print u"Записываем новое..."
@@ -122,6 +124,6 @@ class Command(NoArgsCommand):
             if send_message:
                 mail_admins(subject=ERROR_SUBJECT, message=message)
             print e
-        finally:            
-            transaction.leave_transaction_management()
+#        finally:            
+#            transaction.leave_transaction_management()
         print u"Таблица ipgeobase обновлена."
