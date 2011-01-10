@@ -25,29 +25,30 @@ district_hashes = {}
 region_hashes = {}
 
 def get_or_create_city(region, city_name):
-    
-    key = u'%s%s%s'%(region.country, region, city_name)    
+    alias = slugify(city_name)
+    key = u'%s%s%s'%(region.country.pk, region.pk, alias)    
     if city_hashes.has_key(key): return city_hashes[key]
     
     try:
-        city = City.objects.get(region = region, name = city_name)
+        city = City.objects.get(region = region, alias = alias)
         city.country = region.country
         city.save()        
     except:
-        city = City(region = region, country = country, name = city_name, alias = slugify(city_name).lower())
+        city = City(region = region, country = country, name = city_name, alias = alias)
         city.save()
     
     city_hashes[key] = city
     return city
 
 def get_or_create_district(country, name):
-    key = u'%s%s'%(country, name)
+    alias = slugify(name).lower()
+    key = u'%s%s'%(country.pk, alias)
     
     if district_hashes.has_key(key): return district_hashes[key]
     try:
-        district = Dictrict.objects.get(country = country, name = name)
+        district = Dictrict.objects.get(country = country, alias = alias)
     except:
-        district = District(country = country, alias = slugify(name).lower(), name = name)
+        district = District(country = country, alias = alias, name = name)
         district.save()
         
     district_hashes[key] = district
@@ -55,12 +56,12 @@ def get_or_create_district(country, name):
 
 def get_or_create_region(country, name):
     
-    key = u'%s%s'%(country, name)
+    alias = slugify(name).lower()
+    key = u'%s%s'%(country.pk, alias)
     if region_hashes.has_key(key): return region_hashes[key]
     try:
-        region = Region.objects.get(country = country, name = name)
-    except:
-        alias = slugify(name).lower()
+        region = Region.objects.get(country = country, alias = alias)
+    except:        
         region = Region(country = country, name = name, alias = alias)
         region.save()
     
@@ -92,6 +93,9 @@ class Command(NoArgsCommand):
         try:
             print u"Удаляем старые записи в таблице ipgeobase..."
             IPGeoBase.objects.all().delete()
+            City.objects.all().delete()
+            Region.objects.all().delete()
+            District.objects.all().delete()
             print u"Записываем новое..."
             
             data =  [l.split('\t') for l in lines if l.strip()]
@@ -130,4 +134,4 @@ class Command(NoArgsCommand):
             message = u"Данные не обновлены: %s" % e
             if send_message:
                 mail_admins(subject=ERROR_SUBJECT, message=message)
-        print u"Таблица ipgeobase обновлена."
+        print u"Новые данные записаны"
