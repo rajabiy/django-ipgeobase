@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-30 10:40+0600\n"
+"POT-Creation-Date: 2011-04-30 10:54+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ildus <k-dus@yandex.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,3 +81,11 @@ msgstr "широта"
 #: models.py:78
 msgid "longitude"
 msgstr "долгота"
+
+#: models.py:86
+msgid "IP Block"
+msgstr "Блок IP адресов"
+
+#: models.py:87
+msgid "IP Base"
+msgstr "База IP адресов"

@@ -81,3 +81,7 @@ class IPGeoBase(models.Model):
     
     def __unicode__(self):
         return self.ip_block
+    
+    class Meta:
+        verbose_name= _('IP Block')
+        verbose_name_plural= _('IP Base')
