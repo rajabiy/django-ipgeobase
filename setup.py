@@ -2,12 +2,13 @@ from setuptools import setup, find_packages
  
 setup(
     name='django-ipgeobase',
-    version='0.1.0',
+    version='0.1.1',
     description='Django IPGeoBase',
     author='Ildus Kurbangaliev',
     author_email='i.kurbangaliev@gmail.com',
-    url='http://github.com/ildus/django-ipgeobase',
+    url='https://gitorious.org/django-ipgeobase',
     packages=find_packages(),
+    requires = ['pytils', 'progressbar'],
     classifiers=[
         'Development Status :: 1 - Alpha',
         'Environment :: Web Environment',
