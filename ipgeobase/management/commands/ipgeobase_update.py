@@ -105,9 +105,6 @@ class Command(NoArgsCommand):
                 pbar.update(count+1)
                 count += 1
                 
-                if count % 100 == 0:
-                    transaction.commit()
-                
                 region = get_or_create_region(country, force_unicode(line[4]))
                 city = get_or_create_city(region, force_unicode(line[3]))
                 district = get_or_create_district(country, force_unicode(line[5]))

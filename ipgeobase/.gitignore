@@ -12,3 +12,6 @@ pip-log.txt
 media/apps
 *.kpf
 .geanyprj
+
+*.egg
+*.egg-info
